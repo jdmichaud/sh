@@ -39,7 +39,7 @@ else
       fi
       # Start an container from it
       echo "Creating container from $DOCKER_IMAGE..."
-      docker run -it -v $PATH_TO_LOAD:/home/jedi/ggrep $DOCKER_IMAGE bash
+      docker run -it -v $PATH_TO_LOAD:/home/jedi/$(basename $PATH_TO_LOAD) $DOCKER_IMAGE bash --login
     else
       echo "Error: No docker image called $DOCKER_IMAGE"
       echo "Create a docker image using the Dockerfile and launch this devprompt"
