@@ -1,12 +1,13 @@
 #!/bin/bash
 # This script allows you to save and create the pane configuration of your
 # current tmux window
+
 set -x
 
 FILE=''
 READ=0
 OPT=0
-TMUX=tmux-next
+TMUXEXEC=tmux
 
 function usage() {
   echo "This script allows you to:"
@@ -45,24 +46,44 @@ then
   exit 1
 fi
 
+function get_current_tmux_session() {
+  echo `$TMUXEXEC display-message -p '#{session_name}'`
+}
+
+function get_current_tmux_window() {
+  echo `$TMUXEXEC display-message -p '#{window_id}'`
+}
+
+function tmux_command () {
+  session=$1
+  window=${session}:$2
+  pane=${window}.$3
+  $TMUXEXEC send-keys -t "$pane" C-z $4 Enter
+}
+
 function create_panes() {
   previous_top=0
   previous_left=0
   while read -r line
   do
+    # split the line with ' ' as separator
     arrIN=(${line// / })
     if [ $previous_top != ${arrIN[0]} ]
     then
       echo "will create vertical pane with line ${arrIN[0]}"
-      $TMUX split-window -v -l ${arrIN[0]}
+      $TMUXEXEC split-window -v -l ${arrIN[0]}
     elif [ $previous_left != ${arrIN[1]} ]
     then
       echo "will create horizontal pane with line ${arrIN[1]}"
-      $TMUX split-window -h -l ${arrIN[1]}
+      $TMUXEXEC split-window -h -l ${arrIN[1]}
     fi
     previous_top=${arrIN[0]}
     previous_left=${arrIN[1]}
   done < $1
+}
+
+function write_panes {
+  $TMUXEXEC list-pane -F '#{pane_top} #{pane_left} #{pane_current_path}' > $file
 }
 
 if [ $READ -eq 1 ]
