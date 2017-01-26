@@ -3,9 +3,9 @@ import argparse
 import subprocess
 
 
-def check_call(*args):
-  print args
-  subprocess.check_call(*args)
+def check_call(*args, **kwargs):
+  print args, kwargs
+  subprocess.check_call(*args, **kwargs)
 
 
 g_tmux_exec = 'tmux'
@@ -32,8 +32,8 @@ def read(filepath):
     for pane in panes[1:]:
       # search through parent, the pane with a common coordinate
       print "on pane", pane['index']
-      print "parent", panes[pane['index'] - 1::-1]
-      for parentPane in panes[pane['index'] - 1::-1]:
+      print "parent", panes[0:pane['index']]
+      for parentPane in panes[0:pane['index']]:
         print 'parentPane:', parentPane
         if pane['top'] == parentPane['top']:
           # position the focus on the parentPane
@@ -42,6 +42,7 @@ def read(filepath):
           check_call([g_tmux_exec] + g_split_horizontally_cmd + [pane['left']])
           # change working directory
           #check_call(['cd', parentPane['wd']])
+          break
         elif pane['left'] == parentPane['left']:
           # position the focus on the parentPane
           check_call([g_tmux_exec] + g_select_pane_cmd + [str(parentPane['index'])])
@@ -49,6 +50,7 @@ def read(filepath):
           check_call([g_tmux_exec] + g_split_vertically_cmd + [pane['top']])
           # change working directory
           #check_call(['cd', parentPane['wd']])
+          break
 
 
 parser = argparse.ArgumentParser(description='Dump or recreate tmux pane layouts.')
