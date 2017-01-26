@@ -1,3 +1,9 @@
+#
+# WARNING: This scripts does not work as it turns our tmux is not labelling
+# its pane with consistent ids. Pane ids will change over time as you create
+# new panes in your winwdow.
+#
+
 #!/usr/bin/python
 import argparse
 import subprocess
