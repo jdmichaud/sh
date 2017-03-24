@@ -1,0 +1,6 @@
+{
+  "CtrlLeft": "WordLeft",
+  "CtrlRight": "WordRight",
+  "CtrlU": "VSplit",
+  "CtrlJ": "HSplit"
+}
