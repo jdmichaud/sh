@@ -61,13 +61,13 @@ function get_container_id() {
 }
 
 # Look for a running container
-if [[ $(docker ps | awk '{ print $2 }' | grep $DOCKER_IMAGE) ]]; then
+if [[ $(docker ps | awk '{ print $2 }' | grep $DOCKER_IMAGE | head -n 1) ]]; then
   # Attach to container
   echo "Creating new shell in currently running $(get_container_id)..."
   docker exec -i -t $(get_container_id) bash --login
 else
   # Look for a stopped container
-  if [[ $(docker ps -a | awk '{ print $2 }' | grep $DOCKER_IMAGE) ]]; then
+  if [[ $(docker ps -a | awk '{ print $2 }' | grep $DOCKER_IMAGE | head -n 1) ]]; then
     # Start it and attach to it
     echo "Starting and attaching to existing $(get_container_id)..."
     docker start $(get_container_id)
