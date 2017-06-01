@@ -1,0 +1,5 @@
+#!/bin/sh
+
+find -name '*.tar' -o -name '*.tar.*' | while read f; do
+  tar -tf "$f" | grep $1 | sed "s|^|$f:|"
+done
