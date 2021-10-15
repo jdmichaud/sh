@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+if [ $# -lt 1 ]
+then
+  echo "$0: error: missing arguments"
+  echo "usage: $0 <command> <args...>"
+  exit 1
+fi
+
+for folder in `find . -maxdepth 1 ! -path . -type d`
+do
+  if [ -d "$folder"/.git ];
+  then
+    pushd . > /dev/null
+    cd "$folder"
+    echo -e '\033[1;32m'
+    echo `pwd`
+    echo -e '\033[0m'
+    $@
+    popd > /dev/null
+  fi
+done
+
