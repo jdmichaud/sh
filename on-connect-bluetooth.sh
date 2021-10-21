@@ -14,7 +14,7 @@ ACTION=$(expr "$ACTION" : "\([a-zA-Z]\+\).*")
 if [ "$ACTION" = "add" -o "$ACTION" = "remove" ]
 then
   sleep 1
-  CONFIRM=`bluetoothctl info | grep 0000110d-0000-1000-8000-00805f9b34fb`
+  CONFIRM=`bluetoothctl info | grep 00001108-0000-1000-8000-00805f9b34fb`
   if [ ! -z "$CONFIRM" ]
   then
     touch /tmp/bluetooth-a2dp-connected
