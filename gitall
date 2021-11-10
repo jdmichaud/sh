@@ -16,7 +16,7 @@ do
     echo -e '\033[1;32m'
     echo `pwd`
     echo -e '\033[0m'
-    $@
+    "$@"
     popd > /dev/null
   fi
 done
