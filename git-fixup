@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -e
+
+usage () {
+  echo "Usage: git fixup [commit-it]"
+
+}
+
+if [ $# -ne 1 ]; then
+  usage
+  exit 1
+fi
+
+git commit --fixup=$1 && GIT_SEQUENCE_EDITOR=cat git rebase --interactive --autosquash $1~1
+
